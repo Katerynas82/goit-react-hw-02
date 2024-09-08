@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { useEffect } from "react";
+import "./App.css";
+import Description from "./components/Descriptions/Descriptions";
+import Options from "./components/Options/Options";
+import Feedback from "./components/Feedback/Feedback";
+import Notification from "./components/Notification/Notification";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [clicksData, setClicksData] = useState(() => {
+    const savedData = window.localStorage.getItem("saved-data");
+    return savedData ? JSON.parse(savedData) : { good: 0, neutral: 0, bad: 0 };
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem("saved-data", JSON.stringify(clicksData));
+  }, [clicksData]);
+
+  const updateFeedback = (feedbackType) => {
+    setClicksData((prev) => ({
+      ...prev,
+      [feedbackType]: prev[feedbackType] + 1,
+    }));
+  };
+
+  const totalFeedback = clicksData.good + clicksData.neutral + clicksData.bad;
+
+  const positiveFeedback =
+    totalFeedback === 0
+      ? 0
+      : Math.round((clicksData.good / totalFeedback) * 100);
+
+  const handleReset = () => {
+    setClicksData({
+      good: 0,
+      neutral: 0,
+      bad: 0,
+    });
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Description />
+      <Options
+        updateFeedback={updateFeedback}
+        totalFeedback={totalFeedback}
+        handleReset={handleReset}
+      />
+      <Notification totalFeedback={totalFeedback} />
+      <Feedback
+        clicksData={clicksData}
+        totalFeedback={totalFeedback}
+        positiveFeedback={positiveFeedback}
+      />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
