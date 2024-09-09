@@ -5,6 +5,10 @@ body{
     margin: 4px;
 }
 
- .btn:hover{
+ .btn:hover
+{
+        background-color: #7cf107;
+    }
+.btn :focus{
         background-color: #7cf107;
     }
