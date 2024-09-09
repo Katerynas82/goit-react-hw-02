@@ -1,19 +1,11 @@
 /* eslint-disable react/prop-types */
 
-import styles from "./Feedback.module.css";
-import Notification from "../Notification/Notification";
-
-
+import styles from "./Feedback.module.css"; 
 
 export default function Feedback({ clicksData, totalFeedback, positiveFeedback }) {
-  
-
-
-  return (
+    return (
     <div>
-      {totalFeedback === 0 ? (
-        <Notification message="No feedback yet" />
-      ) : (
+      
         <ul className={styles.list}>
           <li>Good: {clicksData.good} </li>
           <li>Neutral: {clicksData.neutral} </li>
@@ -21,7 +13,7 @@ export default function Feedback({ clicksData, totalFeedback, positiveFeedback }
           <li>Total: {totalFeedback}</li>
           <li>Positive: {positiveFeedback} % </li>
         </ul>
-      )}
+      
     </div>
   );
 }

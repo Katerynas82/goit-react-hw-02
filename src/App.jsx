@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import "./App.css";
-import Description from "./components/Descriptions/Descriptions";
+import Description from "./components/Description/Description";
 import Options from "./components/Options/Options";
 import Feedback from "./components/Feedback/Feedback";
 import Notification from "./components/Notification/Notification";
@@ -37,7 +37,6 @@ const App = () => {
       bad: 0,
     });
   };
-
   return (
     <>
       <Description />
@@ -46,12 +45,15 @@ const App = () => {
         totalFeedback={totalFeedback}
         handleReset={handleReset}
       />
-      <Notification totalFeedback={totalFeedback} />
-      <Feedback
-        clicksData={clicksData}
-        totalFeedback={totalFeedback}
-        positiveFeedback={positiveFeedback}
-      />
+      {totalFeedback === 0 ? (
+        <Notification message="No feedback given yet" />
+      ) : (
+        <Feedback
+          clicksData={clicksData}
+          totalFeedback={totalFeedback}
+          positiveFeedback={positiveFeedback}
+        />
+      )}
     </>
   );
 };
